@@ -78,6 +78,7 @@ public class BookServiceImpl implements BookService {
         book.setCopies(bookDto.getCopies());
         book.setTitle(bookDto.getTitle());
         book.setCopiesAvailable(bookDto.getCopiesAvailable());
+        book.setCategory(bookDto.getCategory());
         Book updatedBook = bookRepository.save(book);
         return mapToDTO(updatedBook);
     }
