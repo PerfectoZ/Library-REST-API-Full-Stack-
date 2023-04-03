@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/books/")
+@RequestMapping("/books")
 public class BookController {
     private BookService bookService;
 
@@ -22,7 +22,7 @@ public class BookController {
         return new ResponseEntity<>(bookService.getBookbyId(id), HttpStatus.OK);
     }
 
-    @GetMapping
+    /*@GetMapping
     public BookResponse getAllBooks(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -30,7 +30,7 @@ public class BookController {
             @RequestParam(value = "desc", defaultValue = AppConstants.DEFAULT_DESC, required = false) boolean desc
     ) {
         return bookService.getAllBooks(pageNo, pageSize, sortBy, desc);
-    }
+    }*/
 
     @PostMapping
     public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto) {

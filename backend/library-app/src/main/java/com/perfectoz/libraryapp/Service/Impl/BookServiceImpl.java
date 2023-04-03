@@ -38,16 +38,16 @@ public class BookServiceImpl implements BookService {
     public BookResponse getAllBooks(int pageNo, int pageSize, String sortBy, boolean desc) {
         Sort sort = desc ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Book> posts = bookRepository.findAll(pageable);
-        List<Book> listOfPosts = posts.getContent();
-        List<BookDto> books =  listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        Page<Book> books = bookRepository.findAll(pageable);
+        List<Book> listOfBooks = books.getContent();
+        List<BookDto> content =  listOfBooks.stream().map(bk -> mapToDTO(bk)).collect(Collectors.toList());
         BookResponse bookResponse = new BookResponse();
-        bookResponse.setBooks(books);
-        bookResponse.setPageNo(posts.getNumber());
-        bookResponse.setPageSize(posts.getSize());
-        bookResponse.setTotalElements(posts.getTotalElements());
-        bookResponse.setTotalPages(posts.getTotalPages());
-        bookResponse.setLast(posts.isLast());
+        bookResponse.setBooks(content);
+        bookResponse.setPageNo(books.getNumber());
+        bookResponse.setPageSize(books.getSize());
+        bookResponse.setTotalElements(books.getTotalElements());
+        bookResponse.setTotalPages(books.getTotalPages());
+        bookResponse.setLast(books.isLast());
         return bookResponse;
     }
 
