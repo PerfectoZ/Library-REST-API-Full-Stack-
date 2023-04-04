@@ -1,19 +1,19 @@
 class BookModel {
     id: number;
-    title: String;
-    author?: String;
-    description?: String;
+    title: string;
+    author?: string;
+    description?: string;
     copies? : number;
     copiesAvailable? : number;
-    category? : String;
+    category? : string;
     img? : string;
     constructor(id: number, 
-                title: String, 
-                author?: String, 
-                description?: String, 
+                title: string, 
+                author?: string, 
+                description?: string, 
                 copies? : number, 
                 copiesAvailable? : number, 
-                category? : String, 
+                category? : string, 
                 img? : string) {
         this.id = id;
         this.title = title;
