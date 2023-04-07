@@ -7,10 +7,7 @@ import com.perfectoz.libraryapp.Payload.BookResponse;
 import com.perfectoz.libraryapp.Repository.BookRepository;
 import com.perfectoz.libraryapp.Service.BookService;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,6 +78,16 @@ public class BookServiceImpl implements BookService {
         book.setCategory(bookDto.getCategory());
         Book updatedBook = bookRepository.save(book);
         return mapToDTO(updatedBook);
+    }
+
+    @Override
+    public Page<BookDto> findByTitleContaining(String title, Pageable pageable) {
+        Page<Book> books = bookRepository.findByTitleContaining(title, pageable);
+        List<BookDto> bookDtos = books
+                .stream()
+                .map(book -> mapToDTO(book))
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookDtos, books.getPageable(), books.getTotalElements());
     }
 
     private BookDto mapToDTO(Book book) {

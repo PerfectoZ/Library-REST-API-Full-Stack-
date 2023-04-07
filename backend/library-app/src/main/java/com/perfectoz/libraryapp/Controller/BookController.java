@@ -1,9 +1,12 @@
 package com.perfectoz.libraryapp.Controller;
 
+import com.perfectoz.libraryapp.Entity.Book;
 import com.perfectoz.libraryapp.Payload.BookDto;
 import com.perfectoz.libraryapp.Payload.BookResponse;
 import com.perfectoz.libraryapp.Service.BookService;
 import com.perfectoz.libraryapp.Util.AppConstants;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +25,6 @@ public class BookController {
         return new ResponseEntity<>(bookService.getBookbyId(id), HttpStatus.OK);
     }
 
-    /*@GetMapping
-    public BookResponse getAllBooks(
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "desc", defaultValue = AppConstants.DEFAULT_DESC, required = false) boolean desc
-    ) {
-        return bookService.getAllBooks(pageNo, pageSize, sortBy, desc);
-    }*/
-
     @PostMapping
     public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto) {
         return ResponseEntity.ok(bookService.createBook(bookDto));
@@ -47,5 +40,14 @@ public class BookController {
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookDto bookDto) {
         BookDto resp = bookService.updateBook(bookDto, id);
         return new ResponseEntity<>(bookDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<BookDto>> findByTitleContaining(
+            @RequestParam("title") String title,
+            Pageable pageable
+    ) {
+        Page<BookDto> books = bookService.findByTitleContaining(title, pageable);
+        return ResponseEntity.ok(books);
     }
 }
