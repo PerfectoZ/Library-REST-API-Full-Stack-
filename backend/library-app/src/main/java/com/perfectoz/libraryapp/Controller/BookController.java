@@ -50,4 +50,14 @@ public class BookController {
         Page<BookDto> books = bookService.findByTitleContaining(title, pageable);
         return ResponseEntity.ok(books);
     }
+
+    @GetMapping("/search/findByCategory")
+    public ResponseEntity<Page<BookDto>> findByCategory(
+            @RequestParam("category") String category,
+            Pageable pageable
+    ) {
+        Page<BookDto> books = bookService.findByCategory(category, pageable);
+        return ResponseEntity.ok(books);
+    }
+
 }

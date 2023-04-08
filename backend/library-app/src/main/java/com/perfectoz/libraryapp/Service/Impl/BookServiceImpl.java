@@ -90,6 +90,16 @@ public class BookServiceImpl implements BookService {
         return new PageImpl<>(bookDtos, books.getPageable(), books.getTotalElements());
     }
 
+    @Override
+    public Page<BookDto> findByCategory(String category, Pageable pageable) {
+        Page<Book> books = bookRepository.findByCategory(category, pageable);
+        List<BookDto> bookDtos = books
+                .stream()
+                .map(book -> mapToDTO(book))
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookDtos, books.getPageable(), books.getTotalElements());
+    }
+
     private BookDto mapToDTO(Book book) {
         BookDto bookDto = mapper.map(book, BookDto.class);
         return bookDto;

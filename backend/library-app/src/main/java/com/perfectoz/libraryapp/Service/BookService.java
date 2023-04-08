@@ -13,4 +13,5 @@ public interface BookService {
     public void deleteBook(Long id);
     public BookDto updateBook(BookDto bookDto, Long id);
     public Page<BookDto> findByTitleContaining(String title, Pageable pageable);
+    public Page<BookDto> findByCategory(String category, Pageable pageable);
 }

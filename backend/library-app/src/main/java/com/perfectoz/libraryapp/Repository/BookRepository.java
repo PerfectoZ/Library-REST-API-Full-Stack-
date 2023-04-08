@@ -11,4 +11,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "SELECT * FROM book WHERE title ILIKE %?1%",
             nativeQuery = true)
     Page<Book> findByTitleContaining(String title, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE lower(b.category) = lower(:category)")
+    Page<Book> findByCategory(String category, Pageable pageable);
 }
