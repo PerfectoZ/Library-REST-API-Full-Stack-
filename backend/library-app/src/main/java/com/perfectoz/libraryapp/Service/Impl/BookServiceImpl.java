@@ -1,26 +1,32 @@
 package com.perfectoz.libraryapp.Service.Impl;
 
 import com.perfectoz.libraryapp.Entity.Book;
+import com.perfectoz.libraryapp.Entity.Checkout;
 import com.perfectoz.libraryapp.Exceptions.ResourceNotFoundException;
 import com.perfectoz.libraryapp.Payload.BookDto;
 import com.perfectoz.libraryapp.Payload.BookResponse;
 import com.perfectoz.libraryapp.Repository.BookRepository;
+import com.perfectoz.libraryapp.Repository.CheckoutRepository;
 import com.perfectoz.libraryapp.Service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
     private ModelMapper mapper;
+    private CheckoutRepository checkoutRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, ModelMapper mapper) {
+    public BookServiceImpl(BookRepository bookRepository, ModelMapper mapper, CheckoutRepository checkoutRepository) {
         this.bookRepository = bookRepository;
         this.mapper = mapper;
+        this.checkoutRepository = checkoutRepository;
     }
 
     @Override
@@ -98,6 +104,39 @@ public class BookServiceImpl implements BookService {
                 .map(book -> mapToDTO(book))
                 .collect(Collectors.toList());
         return new PageImpl<>(bookDtos, books.getPageable(), books.getTotalElements());
+    }
+
+    @Override
+    public BookDto checkoutBook(String userEmail, Long bookId) throws Exception {
+        Optional<Book> book = bookRepository.findById(bookId);
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+
+        if(!book.isPresent() || validateCheckout != null || book.get().getCopiesAvailable() <= 0) {
+            throw new Exception("Book doesn't exist or already checked out by user");
+        }
+        book.get().setCopiesAvailable(book.get().getCopiesAvailable()-1);
+        bookRepository.save(book.get());
+
+        Checkout checkout = new Checkout(
+                userEmail,
+                LocalDate.now().toString(),
+                LocalDate.now().plusDays(7).toString(),
+                book.get().getId()
+        );
+
+        checkoutRepository.save(checkout);
+        return mapToDTO(book.get());
+    }
+
+    @Override
+    public Boolean checkoutBookByUser(String userEmail, Long bookId) {
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+        return validateCheckout!=null;
+    }
+
+    @Override
+    public Integer currentLoansCount(String userEmail) {
+        return checkoutRepository.findBooksByUserEmail(userEmail).size();
     }
 
     private BookDto mapToDTO(Book book) {

@@ -1,8 +1,10 @@
 package com.perfectoz.libraryapp.Controller;
 
 import com.perfectoz.libraryapp.Entity.Book;
+import com.perfectoz.libraryapp.Entity.Checkout;
 import com.perfectoz.libraryapp.Payload.BookDto;
 import com.perfectoz.libraryapp.Payload.BookResponse;
+import com.perfectoz.libraryapp.Repository.CheckoutRepository;
 import com.perfectoz.libraryapp.Service.BookService;
 import com.perfectoz.libraryapp.Util.AppConstants;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin("http://localhost:3000")
 public class BookController {
     private BookService bookService;
 
@@ -58,6 +61,24 @@ public class BookController {
     ) {
         Page<BookDto> books = bookService.findByCategory(category, pageable);
         return ResponseEntity.ok(books);
+    }
+
+    @PutMapping("/secure/checkout")
+    public ResponseEntity<BookDto> checkoutBook(@RequestParam Long bookId) throws Exception {
+        String userEmail = "testuser@gmail.com";
+        return ResponseEntity.ok(bookService.checkoutBook(userEmail, bookId));
+    }
+
+    @GetMapping("/secure/isCheckedOut/byUser")
+    public ResponseEntity<Boolean> checkoutBookByUser(@RequestParam Long bookId) {
+        String userEmail = "testuser@gmail.com";
+        return ResponseEntity.ok(bookService.checkoutBookByUser(userEmail, bookId));
+    }
+
+    @GetMapping("/secure/currentLoans/count")
+    public ResponseEntity<Integer> currentLoansCount() {
+        String userEmail = "testuser@gmail.com";
+        return ResponseEntity.ok(bookService.currentLoansCount(userEmail));
     }
 
 }
