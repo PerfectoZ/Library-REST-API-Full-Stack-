@@ -2,7 +2,6 @@ package com.perfectoz.libraryapp.Config;
 
 import com.okta.spring.boot.oauth.Okta;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +11,6 @@ import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
 @Configuration
-@EnableWebSecurity 
 public class SecurityConfiguration {
 
     @Bean

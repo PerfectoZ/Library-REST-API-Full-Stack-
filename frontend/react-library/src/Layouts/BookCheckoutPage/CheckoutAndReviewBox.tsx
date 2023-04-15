@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import BookModel from "../../Models/BookModel";
 
-export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile: boolean}> = (props) => {
+export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile: boolean, 
+    currentLoansCount: number}> = (props) => {
     return(
         <div className={props.mobile ? 'card d-flex mt-5' : 'card d-flex col-3 container mb-5'}>
             <div className='card-body container'>
                 <div className='mt-3'>
                     <p>
-                        <b>0/5 </b>
+                        <b>{props.currentLoansCount}/5 </b>
                         Books Checked Out
                     </p>
                     <hr/>

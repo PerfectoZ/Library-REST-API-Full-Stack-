@@ -7,6 +7,7 @@ import com.perfectoz.libraryapp.Payload.BookResponse;
 import com.perfectoz.libraryapp.Repository.CheckoutRepository;
 import com.perfectoz.libraryapp.Service.BookService;
 import com.perfectoz.libraryapp.Util.AppConstants;
+import com.perfectoz.libraryapp.Util.ExtractJWT;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -70,14 +71,15 @@ public class BookController {
     }
 
     @GetMapping("/secure/isCheckedOut/byUser")
-    public ResponseEntity<Boolean> checkoutBookByUser(@RequestParam Long bookId) {
-        String userEmail = "testuser@gmail.com";
+    public ResponseEntity<Boolean> checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
+                                                      @RequestParam Long bookId) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return ResponseEntity.ok(bookService.checkoutBookByUser(userEmail, bookId));
     }
 
     @GetMapping("/secure/currentLoans/count")
-    public ResponseEntity<Integer> currentLoansCount() {
-        String userEmail = "testuser@gmail.com";
+    public ResponseEntity<Integer> currentLoansCount(@RequestHeader(value = "Authorization") String token) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return ResponseEntity.ok(bookService.currentLoansCount(userEmail));
     }
 
