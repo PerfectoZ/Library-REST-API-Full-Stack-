@@ -2,7 +2,21 @@ import { Link } from "react-router-dom";
 import BookModel from "../../Models/BookModel";
 
 export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile: boolean, 
-    currentLoansCount: number}> = (props) => {
+    currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean }> = (props) => {
+
+    function buttonRender() {
+        if(props.isAuthenticated) {
+            if(!props.isCheckedOut && props.currentLoansCount < 5) {
+                return (<button className='btn btn-success btn-lg'> Checkout </button>)
+            } else if(props.isCheckedOut) {
+                return (<p><b>Book Checked Out, Enjoy</b></p>)
+            } else if(!props.isCheckedOut) {
+                return (<p className='text-danger'> Too Many Books Checked Out </p>)
+            }
+        }
+        return (<Link to={'/login'} className="btn btn-success btn-lg"> Sign in </Link>)
+    }
+
     return(
         <div className={props.mobile ? 'card d-flex mt-5' : 'card d-flex col-3 container mb-5'}>
             <div className='card-body container'>
@@ -32,7 +46,7 @@ export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile
                         </p>
                     </div>
                 </div>
-                <Link to='/#' className='btn btn-success btn-lg'>Sign in</Link>
+                {buttonRender()}
                 <hr/>
                 <p className='mt-3'>
                     This number can change until order has been complete
