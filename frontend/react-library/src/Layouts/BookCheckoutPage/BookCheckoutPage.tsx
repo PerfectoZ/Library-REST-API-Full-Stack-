@@ -139,7 +139,7 @@ export const BookCheckoutPage = () => {
                     throw new Error('Something went wrong!');
                 }
                 const bookCheckedOutJson = await bookCheckedOut.json();
-                setIsCheckedOut(true);
+                setIsCheckedOut(bookCheckedOutJson);
             }
             setIsLoadingBookCheckedOut(false);
         }

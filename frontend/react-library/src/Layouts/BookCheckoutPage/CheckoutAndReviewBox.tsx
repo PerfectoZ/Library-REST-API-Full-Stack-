@@ -5,6 +5,7 @@ export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile
     currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean }> = (props) => {
 
     function buttonRender() {
+        console.log(props.isAuthenticated);
         if(props.isAuthenticated) {
             if(!props.isCheckedOut && props.currentLoansCount < 5) {
                 return (<button className='btn btn-success btn-lg'> Checkout </button>)
