@@ -38,8 +38,6 @@ export const SearchBooksPage = () => {
 
             const responseData = responseJson._embedded.books;
 
-            console.log(responseJson);
-
             setTotalAmountOfBooks(responseJson.page.totalElements);
             setTotalPages(responseJson.page.totalPages);
 
