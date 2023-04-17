@@ -4,7 +4,6 @@ import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from "../Utils/StarsReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import ReviewModel from "../../Models/ReviewModel";
-import userEvent from "@testing-library/user-event";
 import { LatestReviews } from "./LatestReviews";
 import { useOktaAuth } from "@okta/okta-react";
 
@@ -165,7 +164,7 @@ export const BookCheckoutPage = () => {
     }
 
     async function checkoutBook() {
-        const url = `http://localhost:8080/api/books/secure/checkout?bookId=${bookId}`;
+        const url = `http://localhost:8080/books/secure/checkout?bookId=${bookId}`;
         const urlOptions = {
             method: 'PUT',
             headers: {
