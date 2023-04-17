@@ -165,7 +165,7 @@ export const BookCheckoutPage = () => {
     }
 
     async function checkoutBook() {
-        const url = `http://localhost:8080/books/secure/checkout/?bookId=${bookId}`;
+        const url = `http://localhost:8080/api/books/secure/checkout?bookId=${bookId}`;
         const urlOptions = {
             method: 'PUT',
             headers: {
