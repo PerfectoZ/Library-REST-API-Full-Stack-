@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import BookModel from "../../Models/BookModel";
 
 export const CheckoutAndReviewBox: React.FC<{book: BookModel | undefined, mobile: boolean, 
-    currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean }> = (props) => {
+    currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean,
+    checkoutBook: any}> = (props) => {
 
     function buttonRender() {
         console.log(props.isAuthenticated);
         if(props.isAuthenticated) {
             if(!props.isCheckedOut && props.currentLoansCount < 5) {
-                return (<button className='btn btn-success btn-lg'> Checkout </button>)
+                return (<button onClick={() => props.checkoutBook()}className='btn btn-success btn-lg'> Checkout </button>)
             } else if(props.isCheckedOut) {
                 return (<p><b>Book Checked Out, Enjoy</b></p>)
             } else if(!props.isCheckedOut) {
