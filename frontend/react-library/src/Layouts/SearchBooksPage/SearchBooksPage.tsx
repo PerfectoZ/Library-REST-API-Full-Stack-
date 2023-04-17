@@ -18,11 +18,11 @@ export const SearchBooksPage = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = 'http://localhost:8080/api/books';
-            let url: string = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+            const baseUrl: string = 'http://localhost:8080/api/books?sort=id';
+            let url: string = `${baseUrl}&page=${currentPage - 1}&size=${booksPerPage}`;
 
             if (searchUrl === '') {
-                url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+                url = `${baseUrl}&page=${currentPage - 1}&size=${booksPerPage}`;
             } else {
                 let searchwithPage = searchUrl.replace('<pageNumber>', `${currentPage - 1}`);
                 url = baseUrl + searchwithPage;
@@ -37,6 +37,8 @@ export const SearchBooksPage = () => {
             const responseJson = await response.json();
 
             const responseData = responseJson._embedded.books;
+
+            console.log(responseJson);
 
             setTotalAmountOfBooks(responseJson.page.totalElements);
             setTotalPages(responseJson.page.totalPages);

@@ -164,21 +164,21 @@ export const BookCheckoutPage = () => {
     }
 
     async function checkoutBook() {
-        const url = `http://localhost:8080/books/secure/checkout?bookId=${bookId}`;
+        console.log(authState?.accessToken?.accessToken);
+        const url = `http://localhost:8080/books/secure/checkout?bookId=${book?.id}`;
         const urlOptions = {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
                 'Content-Type': 'application/json'
             }
-        }
+        };
         const checkoutResponse = await fetch(url, urlOptions);
         if(!checkoutResponse.ok) {
             throw new Error('Something went wrong!');
         }
         setIsCheckedOut(true);
     }
-
 
     return (
         <div>
